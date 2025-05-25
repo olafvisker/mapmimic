@@ -11,11 +11,12 @@ function App() {
 
   return (
     <div className="h-screen w-full relative overflow-hidden">
-      <div className="absolute top-0 left-0 m-4 z-50 bg-background/80 pointer-events-none backdrop-blur-xl px-2 py-1 font-medium tracking-wide rounded-md flex items-center gap-1">
+      <div className="absolute top-0 left-0 m-8 z-50 bg-background pointer-events-none backdrop-blur-xl px-2 py-1 font-medium tracking-wide rounded-md flex items-center gap-1">
         <TreeDeciduousIcon className="size-5" /> MapMimic
       </div>
+
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel>
+        <ResizablePanel className="m-4 rounded-md">
           <WorldMap onTileSelect={setSelectedTile} />
         </ResizablePanel>
         <ResizableHandle withHandle />
