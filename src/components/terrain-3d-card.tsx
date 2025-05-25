@@ -36,7 +36,7 @@ function Terrain3DCard({
 
   return (
     <div className={cn("relative overflow-hidden w-full rounded-md", className)} {...props}>
-      <Canvas shadows camera={{ position: [2, 2, 2], fov: 50 }}>
+      <Canvas shadows camera={{ position: [350, 350, 350], fov: 50 }}>
         <TerrainScene tile={tile} elevationData={elevationData} analysis={analysis} autoRotate={autoRotate} />
       </Canvas>
       <div className="text-xs absolute top-0 left-0 m-2 bg-background px-2 py-1 rounded-sm">{label}</div>

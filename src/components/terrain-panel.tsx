@@ -10,7 +10,7 @@ import Terrain3DCard from "./terrain-3d-card";
 
 function TerrainPanel({ tile }: { tile: Tile | null }) {
   const { imageUrl, elevationData, analysis, loading } = useElevationTile(tile);
-  const debouncedLoading = useDebouncedValue(loading, 200);
+  const debouncedLoading = useDebouncedValue(loading, 250);
 
   const downloadTile = () => {
     if (!tile || !imageUrl) return;

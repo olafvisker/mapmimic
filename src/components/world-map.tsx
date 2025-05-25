@@ -5,6 +5,7 @@ import TileGraticuleLayer from "./tile-graticule-layer";
 import { useMapState } from "@/hooks/use-map-state";
 import { calculateHillshadeIntensity } from "@/lib/utils";
 import { MAP_SOURCES } from "@/config/map-config";
+import { useEffect } from "react";
 
 const MAP_LIMITS = {
   MAX_ZOOM: 15,
@@ -17,6 +18,8 @@ interface WorldMapProps {
 function WorldMap({ onTileSelect }: WorldMapProps = {}) {
   const { viewState, selectedTile, handleMapClick, handleMove } = useMapState(onTileSelect);
   const hillshadeIntensity = calculateHillshadeIntensity(viewState.zoom);
+
+  useEffect(() => onTileSelect?.(selectedTile), []);
 
   return (
     <Map
