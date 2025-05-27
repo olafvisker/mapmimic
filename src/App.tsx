@@ -5,9 +5,12 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import WorldMap from "./components/world-map";
 import TerrainPanel from "./components/terrain-panel";
 import { TreeDeciduousIcon } from "lucide-react";
+import useMediaQuery from "./hooks/use-media-query";
 
 function App() {
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
+  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const direction = isMobile ? "vertical" : "horizontal";
 
   return (
     <div className="h-screen w-full relative overflow-hidden">
@@ -15,12 +18,12 @@ function App() {
         <TreeDeciduousIcon className="size-5" /> MapMimic
       </div>
 
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel className="m-4 rounded-md">
+      <ResizablePanelGroup direction={direction} autoSaveId={"mapmagic-panel-size"}>
+        <ResizablePanel className="m-4 rounded-md" minSize={20}>
           <WorldMap onTileSelect={setSelectedTile} />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel>
+        <ResizablePanel minSize={20}>
           <TerrainPanel tile={selectedTile} />
         </ResizablePanel>
       </ResizablePanelGroup>

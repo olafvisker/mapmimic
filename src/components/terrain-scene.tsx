@@ -36,11 +36,12 @@ function TerrainScene({ tile, elevationData, analysis, autoRotate = false }: Ter
 
       <ambientLight intensity={0.4} color={"#E6F3FF"} />
       <directionalLight position={[-30, 40, -20]} intensity={0.8} color={"#87CEEB"} />
-      {/* <fog attach="fog" args={["#B8D4F0", 0, 20]} /> */}
+      <fog attach="fog" args={["#B8D4F0", 0, 2000]} />
       <TerrainMesh
         satelliteImageUrl={tileToXYZUrl(MAP_SOURCES.SATELLITE, tile)}
         elevationData={elevationData}
         analysis={analysis}
+        tile={tile}
       />
 
       <OrbitControls
@@ -48,7 +49,7 @@ function TerrainScene({ tile, elevationData, analysis, autoRotate = false }: Ter
         enablePan={true}
         enableRotate={true}
         minDistance={1}
-        maxDistance={1500}
+        maxDistance={2000}
         autoRotate={autoRotate}
         autoRotateSpeed={0.3}
         enableDamping={true}

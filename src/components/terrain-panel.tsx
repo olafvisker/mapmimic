@@ -28,33 +28,48 @@ function TerrainPanel({ tile }: { tile: Tile | null }) {
     );
 
   return (
-    <div className="p-4 flex flex-col gap-4 h-full">
-      <div className="flex gap-4 h-64">
-        <TerrainAnalysisCard analysis={analysis!} loading={debouncedLoading} onDownload={downloadTile} />
-        <Terrain2DCard label={`2D: #${tile[2]}-${tile[0]}-${tile[1]}`} tileImgUrl={imageUrl} />
-        <Terrain3DCard
-          label={`3D: #${tile[2]}-${tile[0]}-${tile[1]}`}
-          elevationData={elevationData}
-          analysis={analysis}
-          loading={debouncedLoading}
-          tile={tile}
-          autoRotate
-          className="bg-gradient-to-b from-orange-600/10 to-muted/25"
-        />
+    <div className="@container p-4 flex flex-col gap-4 h-full overflow-y-auto overflow-hidden">
+      <div className="@max-3xl:flex-col flex gap-4 min-h-fit">
+        <div className="flex gap-4 @max-3xl:grow @max-lg:flex-col min-h-64">
+          <TerrainAnalysisCard
+            analysis={analysis!}
+            loading={debouncedLoading}
+            onDownload={downloadTile}
+            className="min-w-42 grow"
+          />
+          <Terrain2DCard
+            label={`2D: #${tile[2]}-${tile[0]}-${tile[1]}`}
+            tileImgUrl={imageUrl}
+            className="@min-sm:min-w-64"
+          />
+        </div>
+        <div className="min-w-48 min-h-64 flex grow">
+          <Terrain3DCard
+            label={`3D: #${tile[2]}-${tile[0]}-${tile[1]}`}
+            elevationData={elevationData}
+            analysis={analysis}
+            loading={debouncedLoading}
+            tile={tile}
+            autoRotate
+            className="bg-gradient-to-b from-orange-600/10 to-muted/25"
+          />
+        </div>
       </div>
 
-      <Terrain3DCard
-        label="Replication: TODO"
-        elevationData={elevationData}
-        analysis={analysis}
-        tile={tile}
-        loading={debouncedLoading}
-        className="relative overflow-hidden w-full grow border rounded-md bg-gradient-to-b from-sky-400/30 to-green-400/10">
-        <Button disabled size="sm" className="absolute top-0 right-0 m-2">
-          <TreesIcon className="w-4 h-4 mr-1" />
-          Generate new mimic
-        </Button>
-      </Terrain3DCard>
+      <div className="min-h-64 flex grow">
+        <Terrain3DCard
+          label="Replication: TODO"
+          elevationData={elevationData}
+          analysis={analysis}
+          tile={tile}
+          loading={debouncedLoading}
+          className="relative overflow-hidden w-full grow border rounded-md bg-gradient-to-b from-sky-400/30 to-green-400/10">
+          <Button disabled size="sm" className="absolute bottom-0 @min-sm:top-0 right-0 m-2">
+            <TreesIcon className="w-4 h-4 mr-1" />
+            Generate new mimic
+          </Button>
+        </Terrain3DCard>
+      </div>
     </div>
   );
 }

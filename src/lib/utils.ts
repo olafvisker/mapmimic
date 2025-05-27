@@ -60,3 +60,17 @@ export function setParamsToUrl(lng: number, lat: number, zoom: number, tile: Til
   const newUrl = window.location.pathname + "?" + params.toString();
   window.history.replaceState({}, "", newUrl);
 }
+
+export function tileSizeInMeters(zoom: number, lat: number) {
+  const R = 6378137;
+  const latitudeRadians = (lat * Math.PI) / 180;
+  const earthCircumference = 2 * Math.PI * R;
+  const metersPerTileEquator = earthCircumference / Math.pow(2, zoom);
+  const tileSizeEastWest = metersPerTileEquator * Math.cos(latitudeRadians);
+  const tileSizeNorthSouth = metersPerTileEquator;
+
+  return {
+    northSouth: tileSizeNorthSouth,
+    eastWest: tileSizeEastWest,
+  };
+}

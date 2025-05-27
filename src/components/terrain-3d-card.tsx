@@ -28,17 +28,20 @@ function Terrain3DCard({
 }: Terrain3DCardProps) {
   if (loading)
     return (
-      <div className="relative rounded-md bg-muted w-full h-full grid place-content-center">
+      <div className={cn("relative overflow-hidden rounded-md bg-muted w-full grid place-content-center", className)}>
         <Loader2Icon className="animate-spin stroke-1 stroke-muted-foreground" />
         <div className="text-xs absolute top-0 left-0 m-2 bg-background px-2 py-1 rounded-sm">Loading...</div>
       </div>
     );
 
   return (
-    <div className={cn("relative overflow-hidden w-full rounded-md", className)} {...props}>
-      <Canvas shadows camera={{ position: [350, 350, 350], fov: 50 }}>
-        <TerrainScene tile={tile} elevationData={elevationData} analysis={analysis} autoRotate={autoRotate} />
-      </Canvas>
+    <div className={cn("relative overflow-hidden rounded-md flex w-full", className)} {...props}>
+      <div className="overflow-hidden grow">
+        <Canvas shadows camera={{ position: [350, 350, 350], fov: 50 }}>
+          <TerrainScene tile={tile} elevationData={elevationData} analysis={analysis} autoRotate={autoRotate} />
+        </Canvas>
+      </div>
+
       <div className="text-xs absolute top-0 left-0 m-2 bg-background px-2 py-1 rounded-sm">{label}</div>
       {children}
     </div>
