@@ -7,6 +7,7 @@ import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import TerrainAnalysisCard from "./terrain-analysis-card";
 import Terrain2DCard from "./terrain-2d-card";
 import Terrain3DCard from "./terrain-3d-card";
+import TerrainProcedural3DCard from "./terrain-procedural-3d-card";
 
 function TerrainPanel({ tile }: { tile: Tile | null }) {
   const { imageUrl, elevationData, analysis, loading } = useElevationTile(tile);
@@ -51,24 +52,35 @@ function TerrainPanel({ tile }: { tile: Tile | null }) {
             loading={debouncedLoading}
             tile={tile}
             autoRotate
-            className="bg-gradient-to-b from-orange-600/10 to-muted/25"
+            className="bg-gradient-to-t from-emerald-400/50 to-sky-400/5"
           />
         </div>
       </div>
 
       <div className="min-h-64 flex grow">
-        <Terrain3DCard
+        <TerrainProcedural3DCard
+          label="Replication: TODO"
+          analysis={analysis}
+          tile={tile}
+          loading={debouncedLoading}
+          className="relative overflow-hidden w-full grow border rounded-md bg-gradient-to-b from-sky-300/60 to-green-400/5">
+          <Button disabled size="sm" className="absolute bottom-0 @min-sm:top-0 right-0 m-2">
+            <TreesIcon className="w-4 h-4 mr-1" />
+            Generate new mimic
+          </Button>
+        </TerrainProcedural3DCard>
+        {/* <Terrain3DCard
           label="Replication: TODO"
           elevationData={elevationData}
           analysis={analysis}
           tile={tile}
           loading={debouncedLoading}
-          className="relative overflow-hidden w-full grow border rounded-md bg-gradient-to-b from-sky-400/30 to-green-400/10">
+          className="relative overflow-hidden w-full grow border rounded-md bg-gradient-to-b from-sky-300/60 to-green-400/5">
           <Button disabled size="sm" className="absolute bottom-0 @min-sm:top-0 right-0 m-2">
             <TreesIcon className="w-4 h-4 mr-1" />
             Generate new mimic
           </Button>
-        </Terrain3DCard>
+        </Terrain3DCard> */}
       </div>
     </div>
   );

@@ -4,4 +4,6 @@ export interface ElevationAnalysis {
   mean: number;
   std: number;
   range: number;
+  sortedElevations: number[];
+  bins: number[];
 }

@@ -42,20 +42,20 @@ export async function decodeElevationGrid(imageUrl: string, gridSize = 32): Prom
 }
 
 export async function analyzeImageElevations(imageUrl: string): Promise<ElevationAnalysis | null> {
+  const binCount = 64;
+
   return new Promise((resolve) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
-
     img.onload = () => {
       const canvas = document.createElement("canvas");
       canvas.width = img.width;
       canvas.height = img.height;
       const ctx = canvas.getContext("2d");
       if (!ctx) return resolve(null);
-
       ctx.drawImage(img, 0, 0);
-      const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
+      const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const elevations: number[] = [];
       for (let i = 0; i < data.length; i += 16) {
         const r = data[i],
@@ -63,24 +63,40 @@ export async function analyzeImageElevations(imageUrl: string): Promise<Elevatio
           b = data[i + 2];
         elevations.push(decodeElevation(r, g, b));
       }
-
       if (elevations.length === 0) return resolve(null);
 
+      // Basic stats
       const min = Math.min(...elevations);
       const max = Math.max(...elevations);
-      const mean = elevations.reduce((a, b) => a + b, 0) / elevations.length;
-      const variance = elevations.reduce((a, b) => a + (b - mean) ** 2, 0) / elevations.length;
+      const mean = elevations.reduce((sum, v) => sum + v, 0) / elevations.length;
+      const variance = elevations.reduce((sum, v) => sum + (v - mean) ** 2, 0) / elevations.length;
       const std = Math.sqrt(variance);
+      const range = max - min;
+
+      // Sorted list
+      const sortedElevations = elevations.slice().sort((a, b) => a - b);
+
+      // Build histogram
+      const bins = new Array(binCount).fill(0);
+      const binSize = range / binCount;
+      for (const v of elevations) {
+        // find bin index, clamp to [0, binCount-1]
+        let idx = Math.floor((v - min) / binSize);
+        if (idx < 0) idx = 0;
+        else if (idx >= binCount) idx = binCount - 1;
+        bins[idx]++;
+      }
 
       resolve({
         min: Math.round(min),
         max: Math.round(max),
         mean: Math.round(mean),
         std: Math.round(std),
-        range: Math.round(max - min),
+        range: Math.round(range),
+        sortedElevations,
+        bins,
       });
     };
-
     img.onerror = () => resolve(null);
     img.src = imageUrl;
   });

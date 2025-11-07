@@ -5,21 +5,19 @@ import { Loader2Icon } from "lucide-react";
 import React from "react";
 import TerrainScene from "./terrain-scene";
 import type { Tile } from "@mapbox/tilebelt";
-import TerrainMesh from "./terrain-mesh";
 import { MAP_SOURCES } from "@/config/map-config";
+import TerrainMeshProcedural from "./terrain-mesh-procedural";
 
-interface Terrain3DCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface TerrainProcedural3DCardProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
-  elevationData: number[][];
   analysis: ElevationAnalysis | null;
   autoRotate?: boolean;
   loading?: boolean;
   tile: Tile;
 }
 
-function Terrain3DCard({
+function TerrainProcedural3DCard({
   label,
-  elevationData,
   analysis,
   loading,
   tile,
@@ -27,7 +25,7 @@ function Terrain3DCard({
   className,
   children,
   ...props
-}: Terrain3DCardProps) {
+}: TerrainProcedural3DCardProps) {
   if (loading)
     return (
       <div className={cn("relative overflow-hidden rounded-md bg-muted w-full grid place-content-center", className)}>
@@ -41,12 +39,13 @@ function Terrain3DCard({
       <div className="overflow-hidden grow">
         <Canvas shadows camera={{ position: [350, 350, 350], fov: 50 }}>
           <TerrainScene autoRotate={autoRotate}>
-            <TerrainMesh
-              satelliteImageUrl={tileToXYZUrl(MAP_SOURCES.SATELLITE, tile)}
-              elevationData={elevationData}
-              analysis={analysis}
-              tile={tile}
-            />
+            {analysis && (
+              <TerrainMeshProcedural
+                satelliteImageUrl={tileToXYZUrl(MAP_SOURCES.SATELLITE, tile)}
+                analysis={analysis}
+                tile={tile}
+              />
+            )}
           </TerrainScene>
         </Canvas>
       </div>
@@ -57,4 +56,4 @@ function Terrain3DCard({
   );
 }
 
-export default React.memo(Terrain3DCard);
+export default React.memo(TerrainProcedural3DCard);

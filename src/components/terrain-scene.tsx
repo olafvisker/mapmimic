@@ -1,19 +1,12 @@
-import React from "react";
+import React, { type ReactNode } from "react";
 import { OrbitControls } from "@react-three/drei";
-import TerrainMesh from "./terrain-mesh";
-import type { Tile } from "@mapbox/tilebelt";
-import { tileToXYZUrl } from "@/lib/utils";
-import { MAP_SOURCES } from "@/config/map-config";
-import type { ElevationAnalysis } from "@/lib/types";
 
 interface TerrainSceneProps {
   autoRotate?: boolean;
-  elevationData: number[][];
-  analysis: ElevationAnalysis | null;
-  tile: Tile;
+  children: ReactNode;
 }
 
-function TerrainScene({ tile, elevationData, analysis, autoRotate = false }: TerrainSceneProps) {
+function TerrainScene({ children, autoRotate = false }: TerrainSceneProps) {
   return (
     <>
       <directionalLight
@@ -37,12 +30,8 @@ function TerrainScene({ tile, elevationData, analysis, autoRotate = false }: Ter
       <ambientLight intensity={0.4} color={"#E6F3FF"} />
       <directionalLight position={[-30, 40, -20]} intensity={0.8} color={"#87CEEB"} />
       <fog attach="fog" args={["#B8D4F0", 0, 2000]} />
-      <TerrainMesh
-        satelliteImageUrl={tileToXYZUrl(MAP_SOURCES.SATELLITE, tile)}
-        elevationData={elevationData}
-        analysis={analysis}
-        tile={tile}
-      />
+
+      {children}
 
       <OrbitControls
         enableZoom={true}
