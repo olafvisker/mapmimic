@@ -1,6 +1,6 @@
 # Map Mimic
 
-Interactive web app (work in progress) that generates procedural terrain variations using real-world DEM (Digital Elevation Model) data.
+[Interactive web app](https://mapmimic-1edc9.web.app/) (work in progress) that generates procedural terrain variations using real-world DEM (Digital Elevation Model) data.
 
 ## Quick Start
 
